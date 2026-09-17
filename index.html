@@ -79,6 +79,13 @@ footer{padding:28px 0;color:#666;font-size:12px;display:flex;justify-content:spa
 .submit-success .back-link{display:inline-block;margin-bottom:30px}
 .submit-success h3{font-size:28px;margin:0 0 14px;color:#f5f5f5}
 .submit-success p{color:#aaa;font-size:15px;margin:0;max-width:440px;margin:0 auto}
+
+/* Verse of the Day */
+#verse{padding:60px 0 20px}
+.verse-card{max-width:640px;margin:0 auto;text-align:center;border-top:1px solid #222;border-bottom:1px solid #222;padding:40px 20px}
+.verse-label{color:#168cff;font-weight:700;letter-spacing:.22em;font-size:12px;text-transform:uppercase;margin-bottom:18px}
+.verse-text{font-size:20px;color:#f0f0f0;line-height:1.5;margin:0 0 12px}
+.verse-ref{color:#888;font-size:14px;font-weight:700;margin:0}
 @media(max-width:640px){.option-grid{grid-template-columns:1fr}.qform-card{border-radius:20px}}
 
 /* MM Media Co. navigation + package refinements */
@@ -177,6 +184,14 @@ footer{padding:28px 0;color:#666;font-size:12px;display:flex;justify-content:spa
 <p>MM Media Co. creates sharp, engaging video content for businesses that want to look professional, connect with people, and grow online.</p>
 <a class="btn" href="#contact">Start a Project</a>
 </div></div></section>
+
+<section id="verse"><div class="wrap">
+<div class="verse-card">
+<div class="verse-label">Verse of the Day</div>
+<p class="verse-text" id="verseText">&ldquo;I can do all things through Christ which strengtheneth me.&rdquo;</p>
+<p class="verse-ref" id="verseRef">Philippians 4:13</p>
+</div>
+</div></section>
 
 <section id="services"><div class="wrap">
 <div class="head"><h2>What we do.</h2><p>From the camera to the final edit, MM Media Co. turns everyday business moments into content people want to watch.</p></div>
@@ -421,6 +436,38 @@ if (window.location.search.includes('submitted=true')) {
   }
   history.replaceState(null, '', window.location.pathname + window.location.hash);
 }
+// Verse of the Day — rotates automatically based on the date, no
+// maintenance needed. King James Version (public domain).
+const verses = [
+  { text: "I can do all things through Christ which strengtheneth me.", ref: "Philippians 4:13" },
+  { text: "Trust in the LORD with all thine heart; and lean not unto thine own understanding.", ref: "Proverbs 3:5" },
+  { text: "For I know the thoughts that I think toward you, saith the LORD, thoughts of peace, and not of evil, to give you an expected end.", ref: "Jeremiah 29:11" },
+  { text: "Commit thy works unto the LORD, and thy thoughts shall be established.", ref: "Proverbs 16:3" },
+  { text: "Whatsoever thy hand findeth to do, do it with thy might.", ref: "Ecclesiastes 9:10" },
+  { text: "Be strong and of a good courage; be not afraid, neither be thou dismayed: for the LORD thy God is with thee whithersoever thou goest.", ref: "Joshua 1:9" },
+  { text: "And whatsoever ye do, do it heartily, as to the Lord, and not unto men.", ref: "Colossians 3:23" },
+  { text: "The LORD is my shepherd; I shall not want.", ref: "Psalm 23:1" },
+  { text: "For we are his workmanship, created in Christ Jesus unto good works.", ref: "Ephesians 2:10" },
+  { text: "But they that wait upon the LORD shall renew their strength.", ref: "Isaiah 40:31" },
+  { text: "In all thy ways acknowledge him, and he shall direct thy paths.", ref: "Proverbs 3:6" },
+  { text: "Let all your things be done with charity.", ref: "1 Corinthians 16:14" },
+  { text: "Let us not be weary in well doing: for in due season we shall reap, if we faint not.", ref: "Galatians 6:9" },
+  { text: "I have set the LORD always before me: because he is at my right hand, I shall not be moved.", ref: "Psalm 16:8" },
+  { text: "This is the day which the LORD hath made; we will rejoice and be glad in it.", ref: "Psalm 118:24" }
+];
+
+(function () {
+  const verseTextEl = document.getElementById('verseText');
+  const verseRefEl = document.getElementById('verseRef');
+  if (verseTextEl && verseRefEl) {
+    const start = new Date(new Date().getFullYear(), 0, 0);
+    const diff = new Date() - start;
+    const dayOfYear = Math.floor(diff / 86400000);
+    const verse = verses[dayOfYear % verses.length];
+    verseTextEl.textContent = '\u201C' + verse.text + '\u201D';
+    verseRefEl.textContent = verse.ref;
+  }
+})();
 </script>
 
 </body></html>
