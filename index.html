@@ -76,6 +76,7 @@ footer{padding:28px 0;color:#666;font-size:12px;display:flex;justify-content:spa
 .submit-btn:active{transform:scale(.99)}
 .thanks-msg{margin-top:20px;color:#999;font-size:14px}
 .submit-success{text-align:center;padding:20px 10px}
+.submit-success .back-link{display:inline-block;margin-bottom:30px}
 .submit-success h3{font-size:28px;margin:0 0 14px;color:#f5f5f5}
 .submit-success p{color:#aaa;font-size:15px;margin:0;max-width:440px;margin:0 auto}
 @media(max-width:640px){.option-grid{grid-template-columns:1fr}.qform-card{border-radius:20px}}
@@ -372,6 +373,14 @@ document.addEventListener('click', function(e){
 */
 const questionnaireForm = document.getElementById('questionnaireForm');
 if (questionnaireForm) {
+  // FormSubmit needs an ABSOLUTE redirect URL — a relative one gets
+  // resolved against formsubmit.co itself, not your site. Building it
+  // here means it always points to wherever this page actually lives.
+  const nextField = questionnaireForm.querySelector('input[name="_next"]');
+  if (nextField) {
+    nextField.value = window.location.origin + window.location.pathname + '?submitted=true#questionnaire';
+  }
+
   questionnaireForm.addEventListener('submit', function (e) {
     const form = e.target;
     const videoTypesGroup = document.getElementById('videoTypesGroup');
@@ -404,8 +413,11 @@ if (window.location.search.includes('submitted=true')) {
   const qformCard = document.querySelector('#questionnaire .qform-card');
   if (qformCard) {
     qformCard.innerHTML =
-      '<div class="submit-success"><h3>Thank you!</h3>' +
-      '<p>Thanks for choosing MM Media Co. I\'ll review your information and get back to you.</p></div>';
+      '<div class="submit-success">' +
+      '<a class="btn back-link" href="index.html">&larr; Back to MM Media Co.</a>' +
+      '<h3>Thank You for Choosing MM Media Co.!</h3>' +
+      '<p>I\'ll review your information and get back to you soon.</p>' +
+      '</div>';
   }
   history.replaceState(null, '', window.location.pathname + window.location.hash);
 }
